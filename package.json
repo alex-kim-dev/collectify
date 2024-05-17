@@ -1,0 +1,26 @@
+{
+  "name": "collectify",
+  "version": "1.0.0-alpha.0",
+  "private": true,
+  "description": "A personal collections management web app",
+  "homepage": "https://github.com/alex-kim-dev/collectify#readme",
+  "bugs": "https://github.com/alex-kim-dev/collectify/issues",
+  "repository": "git@github.com:alex-kim-dev/collectify.git",
+  "license": "MIT",
+  "author": "Alex Kim (https://github.com/alex-kim-dev)",
+  "scripts": {
+    "build": "pnpm --filter \"*\" build",
+    "format": "pnpm --filter \"*\" format",
+    "lint": "pnpm --filter \"*\" lint",
+    "prepare": "husky",
+    "serve": "pnpm --filter \"*\" serve",
+    "start": "pnpm --filter \"*\" start",
+    "typecheck": "pnpm --filter \"*\" typecheck"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "19.3.0",
+    "@commitlint/config-conventional": "19.2.2",
+    "husky": "9.0.11",
+    "lint-staged": "15.2.2"
+  }
+}
