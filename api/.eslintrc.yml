@@ -21,6 +21,10 @@ settings:
 
 rules:
   no-console: off
+  import/no-extraneous-dependencies:
+    - error
+    - devDependencies:
+        - prisma/**/*.ts
   import/order:
     - warn
     - newlines-between: always

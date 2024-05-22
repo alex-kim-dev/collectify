@@ -1,8 +1,9 @@
 import express, { type Request } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { PrismaClient } from '@prisma/client';
 
-dotenv.config({ path: '.env.local' });
+dotenv.config();
 const { PORT, CLIENT_URL } = process.env;
 
 const corsOptions = {
@@ -10,12 +11,16 @@ const corsOptions = {
 };
 
 const app = express();
+const prisma = new PrismaClient();
 
 app.get(
   '/',
   cors(corsOptions),
-  (req: Request<null, object, null, null>, res) => {
-    res.send({ up: true });
+  async (req: Request<null, object, null, null>, res) => {
+    const {
+      _count: { _all: n },
+    } = await prisma.user.aggregate({ _count: { _all: true } });
+    res.send({ up: true, numberOfUsers: n });
   },
 );
 
