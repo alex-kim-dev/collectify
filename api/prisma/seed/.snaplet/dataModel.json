@@ -92,7 +92,7 @@
           "id": "public.Role.name",
           "name": "name",
           "columnName": "name",
-          "type": "text",
+          "type": "UserRole",
           "isRequired": true,
           "kind": "scalar",
           "isList": false,
@@ -472,5 +472,17 @@
       ]
     }
   },
-  "enums": {}
+  "enums": {
+    "UserRole": {
+      "schemaName": "public",
+      "values": [
+        {
+          "name": "ADMIN"
+        },
+        {
+          "name": "USER"
+        }
+      ]
+    }
+  }
 }

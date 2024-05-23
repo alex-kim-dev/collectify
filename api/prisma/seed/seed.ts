@@ -16,10 +16,10 @@ const { permission } = await seed.permission([
   { name: 'user:ban:any' },
 ]);
 
-const { role } = await seed.role([{ name: 'admin' }, { name: 'user' }]);
+const { role } = await seed.role([{ name: 'ADMIN' }, { name: 'USER' }]);
 
-const adminRoleID = role.find(({ name }) => name === 'admin')?.id as number;
-const userRoleID = role.find(({ name }) => name === 'user')?.id as number;
+const adminRoleID = role.find(({ name }) => name === 'ADMIN')?.id as number;
+const userRoleID = role.find(({ name }) => name === 'USER')?.id as number;
 
 await seed.rolePermission([
   ...['user:read:any', 'user:update:own', 'user:delete:any', 'user:ban:any']
