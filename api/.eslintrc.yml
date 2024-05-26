@@ -21,6 +21,9 @@ settings:
 
 rules:
   no-console: off
+  import/extensions:
+    - error
+    - ts: never
   import/no-extraneous-dependencies:
     - error
     - devDependencies:

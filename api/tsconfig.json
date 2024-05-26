@@ -19,6 +19,7 @@
     "module": "ESNext",
     "noEmit": true,
 
+    "allowImportingTsExtensions": true,
     "baseUrl": "src",
     "paths": {
       "~/*": ["*"]
