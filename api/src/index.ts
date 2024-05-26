@@ -1,28 +1,24 @@
-import express, { type Request } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import { PrismaClient } from '@prisma/client';
+import morgan from 'morgan';
+
+import { prismaMiddleware } from '~/middleware';
+import { authRouter } from '~/routes';
 
 dotenv.config();
 const { PORT, CLIENT_URL } = process.env;
 
-const corsOptions = {
-  origin: CLIENT_URL,
-};
-
 const app = express();
-const prisma = new PrismaClient();
 
-app.get(
-  '/',
-  cors(corsOptions),
-  async (req: Request<null, object, null, null>, res) => {
-    const {
-      _count: { _all: n },
-    } = await prisma.user.aggregate({ _count: { _all: true } });
-    res.send({ up: true, numberOfUsers: n });
-  },
-);
+app.use(cors({ origin: CLIENT_URL }));
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(prismaMiddleware);
+
+app.get('/status', (req, res) => res.send({ up: true }));
+app.use('/auth', authRouter);
 
 app.listen(PORT, () => {
   console.log(`Express app is listening at port ${PORT}`);
