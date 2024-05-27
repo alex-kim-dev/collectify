@@ -42,7 +42,7 @@ await seed.user((x) =>
     id: (ctx) => copycat.uuid(ctx.seed),
     name: (ctx) => copycat.firstName(ctx.seed),
     email: (ctx) => copycat.email(ctx.seed),
-    is_banned: (ctx) => copycat.bool(ctx.seed),
+    isBanned: (ctx) => copycat.bool(ctx.seed),
   }),
 );
 

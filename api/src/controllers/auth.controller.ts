@@ -4,18 +4,24 @@ import jwt from 'jsonwebtoken';
 
 import { type RegisterCredentials } from '~/schemas';
 
+const {
+  ACCESS_TOKEN_SECRET = '',
+  REFRESH_TOKEN_SECRET = '',
+  ACCESS_TOKEN_EXPIRATION = '',
+} = process.env;
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS ?? '', 10);
+
 export const authController = {
   async register(
-    req: Request<object, object, RegisterCredentials, object>,
-    res: Response<object, object>,
+    req: Request<object, object, RegisterCredentials>,
+    res: Response,
   ) {
     try {
       if (!req.prisma) throw new Error("Can't access prisma middleware");
 
+      const { prisma } = req;
       const { email, name, password } = req.body;
-      const existingUser = await req.prisma.user.findFirst({
-        where: { email },
-      });
+      const existingUser = await prisma.user.findFirst({ where: { email } });
 
       if (existingUser) {
         res
@@ -24,11 +30,8 @@ export const authController = {
         return;
       }
 
-      const hashedPassword = await bcrypt.hash(
-        password,
-        process.env.SALT_ROUNDS as string,
-      );
-      const user = await req.prisma.user.create({
+      const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+      const user = await prisma.user.create({
         data: {
           email,
           name,
@@ -38,10 +41,15 @@ export const authController = {
         select: { id: true, role: { select: { name: true } } },
       });
 
-      const token = jwt.sign(user, process.env.TOKEN_SECRET as string);
-      // TODO make a record in the token table
+      const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, {
+        expiresIn: ACCESS_TOKEN_EXPIRATION,
+      });
+      const refreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET);
+      await prisma.refreshToken.create({
+        data: { string: refreshToken, user: { connect: { id: user.id } } },
+      });
 
-      res.status(201).send({ ...user, accessToken: token });
+      res.status(201).send({ ...user, accessToken, refreshToken });
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: 'Internal Server Error' });
