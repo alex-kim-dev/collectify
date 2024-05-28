@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 
-import { prismaMiddleware } from '~/middleware';
+import { prisma } from '~/middleware';
 import { authRouter } from '~/routes';
 
 dotenv.config();
@@ -15,7 +15,7 @@ app.use(cors({ origin: CLIENT_URL }));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(prismaMiddleware);
+app.use(prisma);
 
 app.get('/status', (req, res) => res.send({ up: true }));
 app.use('/auth', authRouter);

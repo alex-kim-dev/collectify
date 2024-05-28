@@ -102,6 +102,25 @@ export const authController = {
     }
   },
 
+  async logOut(req: Request<object, object, RefreshToken>, res: Response) {
+    try {
+      if (!req.prisma) throw new Error("Can't access prisma middleware");
+
+      const { prisma } = req;
+      const { refreshToken } = req.body;
+
+      await prisma.refreshToken.update({
+        data: { isValid: false },
+        where: { string: refreshToken },
+      });
+
+      res.sendStatus(204);
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(500);
+    }
+  },
+
   async refresh(req: Request<object, object, RefreshToken>, res: Response) {
     try {
       if (!req.prisma) throw new Error("Can't access prisma middleware");

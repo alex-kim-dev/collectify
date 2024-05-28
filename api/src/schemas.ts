@@ -26,6 +26,12 @@ export const schema = {
     }),
   }),
 
+  logout: z.object({
+    body: z.object({
+      refreshToken: z.string({ required_error: 'Refresh token is required' }),
+    }),
+  }),
+
   refresh: z.object({
     body: z.object({
       refreshToken: z.string({ required_error: 'Refresh token is required' }),
