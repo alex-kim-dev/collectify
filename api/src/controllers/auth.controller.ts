@@ -1,13 +1,14 @@
-import { type Response, type Request } from 'express';
+import type { Response, Request } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { type RegisterCredentials } from '~/schemas';
+import type { RegisterCredentials, RefreshToken } from '~/schemas';
 
 const {
   ACCESS_TOKEN_SECRET = '',
   REFRESH_TOKEN_SECRET = '',
   ACCESS_TOKEN_EXPIRATION = '',
+  REFRESH_TOKEN_EXPIRATION = '',
 } = process.env;
 const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS ?? '', 10);
 
@@ -41,18 +42,73 @@ export const authController = {
         select: { id: true, role: { select: { name: true } } },
       });
 
-      const accessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, {
+      const payload = { id: user.id, role: user.role.name };
+      const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
         expiresIn: ACCESS_TOKEN_EXPIRATION,
       });
-      const refreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET);
+      const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {
+        expiresIn: REFRESH_TOKEN_EXPIRATION,
+      });
       await prisma.refreshToken.create({
         data: { string: refreshToken, user: { connect: { id: user.id } } },
       });
 
-      res.status(201).send({ ...user, accessToken, refreshToken });
+      res.status(201).send({ ...payload, accessToken, refreshToken });
     } catch (error) {
       console.error(error);
-      res.status(500).send({ message: 'Internal Server Error' });
+      res.sendStatus(500);
+    }
+  },
+
+  async refresh(req: Request<object, object, RefreshToken>, res: Response) {
+    try {
+      if (!req.prisma) throw new Error("Can't access prisma middleware");
+
+      const { prisma } = req;
+      const { refreshToken } = req.body;
+
+      const savedToken = await req.prisma.refreshToken.findFirst({
+        where: { string: { equals: refreshToken } },
+      });
+
+      if (!savedToken?.isValid) {
+        res.sendStatus(403);
+        return;
+      }
+
+      jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (error, payload) => {
+        if (error || !payload || typeof payload === 'string') {
+          res.sendStatus(403);
+          return;
+        }
+
+        const user = { id: payload.id, role: payload.role };
+        const newAccessToken = jwt.sign(user, ACCESS_TOKEN_SECRET, {
+          expiresIn: ACCESS_TOKEN_EXPIRATION,
+        });
+        const newRefreshToken = jwt.sign(user, REFRESH_TOKEN_SECRET, {
+          expiresIn: REFRESH_TOKEN_EXPIRATION,
+        });
+
+        await prisma.refreshToken.update({
+          data: { isValid: false },
+          where: { string: refreshToken },
+        });
+        await prisma.refreshToken.create({
+          data: {
+            string: newRefreshToken,
+            user: { connect: { id: user.id } },
+          },
+        });
+
+        res.send({
+          accessToken: newAccessToken,
+          refreshToken: newRefreshToken,
+        });
+      });
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(500);
     }
   },
 };

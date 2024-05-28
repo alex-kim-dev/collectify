@@ -12,7 +12,4 @@ authRouter.post(
   authController.register,
 );
 
-// authRouter.post('/login', authController.logIn);
-// authRouter.post('/confirm', authController.confirm);
-// authRouter.post('/logout', authController.logOut);
-// authRouter.get('/refresh', authController.refreshSession);
+authRouter.post('/refresh', validate(schema.refresh), authController.refresh);

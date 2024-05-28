@@ -18,6 +18,13 @@ export const schema = {
         ),
     }),
   }),
+
+  refresh: z.object({
+    body: z.object({
+      refreshToken: z.string({ required_error: 'Refresh token is required' }),
+    }),
+  }),
 };
 
 export type RegisterCredentials = z.infer<typeof schema.register>['body'];
+export type RefreshToken = z.infer<typeof schema.refresh>['body'];
