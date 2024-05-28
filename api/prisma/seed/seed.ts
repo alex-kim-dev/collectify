@@ -2,6 +2,10 @@
 
 import { createSeedClient } from '@snaplet/seed';
 import { copycat } from '@snaplet/copycat';
+import bcrypt from 'bcrypt';
+
+const { TEST_PASSWORD } = process.env;
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS ?? '1', 10);
 
 const seed = await createSeedClient({ connect: true });
 await seed.$resetDatabase();
@@ -42,6 +46,7 @@ await seed.user((x) =>
     id: (ctx) => copycat.uuid(ctx.seed),
     name: (ctx) => copycat.firstName(ctx.seed),
     email: (ctx) => copycat.email(ctx.seed),
+    password: () => bcrypt.hashSync(TEST_PASSWORD as string, SALT_ROUNDS),
     isBanned: (ctx) => copycat.bool(ctx.seed),
   }),
 );

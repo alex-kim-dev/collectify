@@ -11,5 +11,5 @@ authRouter.post(
   validate(schema.register),
   authController.register,
 );
-
+authRouter.post('/login', validate(schema.login), authController.logIn);
 authRouter.post('/refresh', validate(schema.refresh), authController.refresh);

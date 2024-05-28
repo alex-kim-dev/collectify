@@ -2,7 +2,11 @@ import type { Response, Request } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import type { RegisterCredentials, RefreshToken } from '~/schemas';
+import type {
+  RegisterCredentials,
+  RefreshToken,
+  LoginCredentials,
+} from '~/schemas';
 
 const {
   ACCESS_TOKEN_SECRET = '',
@@ -54,6 +58,44 @@ export const authController = {
       });
 
       res.status(201).send({ ...payload, accessToken, refreshToken });
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(500);
+    }
+  },
+
+  async logIn(req: Request<object, object, LoginCredentials>, res: Response) {
+    try {
+      if (!req.prisma) throw new Error("Can't access prisma middleware");
+
+      const { prisma } = req;
+      const { email, password } = req.body;
+      const user = await prisma.user.findFirst({
+        where: { email },
+        include: { role: { select: { name: true } } },
+      });
+      const isCorrectPassword = await bcrypt.compare(
+        password,
+        user?.password ?? '',
+      );
+
+      if (!user || !isCorrectPassword) {
+        res.status(401).send({ message: 'Invalid email or password' });
+        return;
+      }
+
+      const payload = { id: user.id, role: user.role.name };
+      const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
+        expiresIn: ACCESS_TOKEN_EXPIRATION,
+      });
+      const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {
+        expiresIn: REFRESH_TOKEN_EXPIRATION,
+      });
+      await prisma.refreshToken.create({
+        data: { string: refreshToken, user: { connect: { id: user.id } } },
+      });
+
+      res.send({ ...payload, accessToken, refreshToken });
     } catch (error) {
       console.error(error);
       res.sendStatus(500);

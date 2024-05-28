@@ -19,6 +19,13 @@ export const schema = {
     }),
   }),
 
+  login: z.object({
+    body: z.object({
+      email: z.string({ required_error: 'Email is required' }),
+      password: z.string({ required_error: 'Password is required' }),
+    }),
+  }),
+
   refresh: z.object({
     body: z.object({
       refreshToken: z.string({ required_error: 'Refresh token is required' }),
@@ -27,4 +34,5 @@ export const schema = {
 };
 
 export type RegisterCredentials = z.infer<typeof schema.register>['body'];
+export type LoginCredentials = z.infer<typeof schema.login>['body'];
 export type RefreshToken = z.infer<typeof schema.refresh>['body'];
