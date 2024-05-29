@@ -1,36 +1,29 @@
-import { StrictMode, useEffect, useState } from 'react';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import { ErrorPage, MainLayout } from '~/views';
 
 const container = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(container);
 
-const App = () => {
-  const [data, setData] = useState<object>({});
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    fetch(import.meta.env.VITE_API_URL, { signal: controller.signal })
-      .then((res) => res.json())
-      .then((resData) => {
-        setData(resData);
-      })
-      .catch((err) => {
-        setData(err);
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
-  return <pre>{JSON.stringify(data, null, 2)}</pre>;
-};
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
+  },
+]);
 
 root.render(
   <StrictMode>
-    <h1>Hello Collectify!</h1>
-    <p>Backend response:</p>
-    <App />
+    <CssBaseline />
+    <RouterProvider router={router} />
   </StrictMode>,
 );
