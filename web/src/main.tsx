@@ -8,7 +8,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import { ErrorPage, MainLayout } from '~/views';
+import { ErrorPage, LoginPage, MainLayout } from '~/views';
 
 const container = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(container);
@@ -18,6 +18,12 @@ const router = createBrowserRouter([
     path: '/',
     element: <MainLayout />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/login',
+        element: <LoginPage />,
+      },
+    ],
   },
 ]);
 
