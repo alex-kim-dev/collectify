@@ -2,6 +2,12 @@
   "name": "collectify",
   "version": "0.1.0",
   "private": true,
+  "description": "A personal collections management web app",
+  "homepage": "https://github.com/alex-kim-dev/collectify#readme",
+  "bugs": "https://github.com/alex-kim-dev/collectify/issues",
+  "repository": "git@github.com:alex-kim-dev/collectify.git",
+  "license": "MIT",
+  "author": "Alex Kim (https://github.com/alex-kim-dev)",
   "type": "module",
   "scripts": {
     "build": "next build",
