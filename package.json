@@ -13,12 +13,15 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
+    "format": "prettier --check . \"!pnpm-lock.yaml\"",
+    "typecheck": "tsc",
     "start": "next start",
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
     "db:generate": "prisma migrate dev",
-    "db:migrate": "prisma migrate deploy"
+    "db:migrate": "prisma migrate deploy",
+    "prepare": "husky"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
@@ -30,6 +33,8 @@
     "zod": "^3.23.3"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
@@ -38,6 +43,10 @@
     "@typescript-eslint/parser": "^7.1.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.4",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
+    "prettier": "^3.3.3",
     "prisma": "^5.14.0",
     "typescript": "^5.5.3"
   },
