@@ -1,3 +1,4 @@
+import { Box, Heading } from '@chakra-ui/react';
 import Head from 'next/head';
 
 export default function Home() {
@@ -11,9 +12,11 @@ export default function Home() {
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <main>
-        <h1>Collectify home page</h1>
-      </main>
+      <Box as='main' p={6}>
+        <Heading as='h1' textAlign='center'>
+          Collectify home page
+        </Heading>
+      </Box>
     </>
   );
 }
