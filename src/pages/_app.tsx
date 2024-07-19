@@ -1,18 +1,8 @@
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+// import { CacheProvider } from '@chakra-ui/next-js';
+import { ChakraProvider } from '@chakra-ui/react';
 import type { AppType } from 'next/dist/shared/lib/utils';
-import { Rubik } from 'next/font/google';
 
-const rubik = Rubik({
-  subsets: ['latin'],
-  variable: '--font-rubik',
-});
-
-const theme = extendTheme({
-  fonts: {
-    heading: 'var(--font-rubik)',
-    body: 'var(--font-rubik)',
-  },
-});
+import { rubik, theme } from '~/theme';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -24,9 +14,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           }
         `}
       </style>
+      {/* <CacheProvider> */}
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
+      {/* </CacheProvider> */}
     </>
   );
 };
