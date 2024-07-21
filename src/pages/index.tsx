@@ -1,4 +1,4 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import Head from 'next/head';
 
 export default function Home() {
@@ -10,13 +10,11 @@ export default function Home() {
           name='description'
           content='A personal collections management web app'
         />
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='icon' href='/collection.svg' />
       </Head>
-      <Box as='main' p={6}>
-        <Heading as='h1' textAlign='center'>
-          Collectify home page
-        </Heading>
-      </Box>
+      <Heading as='h1' textAlign='center'>
+        Home page
+      </Heading>
     </>
   );
 }

@@ -1,7 +1,7 @@
-// import { CacheProvider } from '@chakra-ui/next-js';
 import { ChakraProvider } from '@chakra-ui/react';
 import type { AppType } from 'next/dist/shared/lib/utils';
 
+import { Layout } from '~/components/Layout';
 import { rubik, theme } from '~/theme';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
@@ -14,11 +14,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           }
         `}
       </style>
-      {/* <CacheProvider> */}
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ChakraProvider>
-      {/* </CacheProvider> */}
     </>
   );
 };
