@@ -5,13 +5,21 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   Stack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EnvelopeFill, LockFill } from 'react-bootstrap-icons';
+import { type MouseEventHandler, useState } from 'react';
+import {
+  EnvelopeFill,
+  EyeFill,
+  EyeSlashFill,
+  LockFill,
+} from 'react-bootstrap-icons';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
@@ -25,6 +33,12 @@ const SignIn: React.FC = () => {
     register,
     formState: { isSubmitting, errors },
   } = useForm<SignInInputs>({ resolver: zodResolver(schema.signIn) });
+
+  const [isPwShown, setPwShown] = useState(false);
+
+  const handlePwShow: MouseEventHandler<HTMLButtonElement> = () => {
+    setPwShown((isShown) => !isShown);
+  };
 
   const onSubmit: SubmitHandler<SignInInputs> = async (data) => {
     console.log('Signing in with:', data);
@@ -65,9 +79,18 @@ const SignIn: React.FC = () => {
             <Input
               variant='filled'
               size='lg'
-              type='password'
+              type={isPwShown ? 'text' : 'password'}
               {...register('password')}
             />
+            <InputRightElement boxSize={12}>
+              <IconButton
+                variant='ghost'
+                onClick={handlePwShow}
+                aria-label='Show/hide passwords'
+              >
+                {isPwShown ? <EyeSlashFill size={20} /> : <EyeFill size={20} />}
+              </IconButton>
+            </InputRightElement>
           </InputGroup>
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
         </FormControl>
