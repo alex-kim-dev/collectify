@@ -11,23 +11,23 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { EnvelopeFill, LockFill } from 'react-bootstrap-icons';
+import { EnvelopeFill, LockFill, PersonFill } from 'react-bootstrap-icons';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
 import { schema } from '~/lib/validate';
 
-type SignInInputs = z.infer<typeof schema.signIn>;
+type SignUpInputs = z.infer<typeof schema.signUp>;
 
-const SignIn: React.FC = () => {
+const SignUp: React.FC = () => {
   const {
     handleSubmit,
     register,
     formState: { isSubmitting, errors },
-  } = useForm<SignInInputs>({ resolver: zodResolver(schema.signIn) });
+  } = useForm<SignUpInputs>({ resolver: zodResolver(schema.signUp) });
 
-  const onSubmit: SubmitHandler<SignInInputs> = async (data) => {
-    console.log('Signing in with:', data);
+  const onSubmit: SubmitHandler<SignUpInputs> = async (data) => {
+    console.log('Signing up with:', data);
 
     await new Promise<void>((resolve) => {
       setTimeout(resolve, 2000);
@@ -37,10 +37,10 @@ const SignIn: React.FC = () => {
   return (
     <Container as='form' maxW='sm' noValidate onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={5}>
-        <Heading as='h1'>Sign In</Heading>
+        <Heading as='h1'>Sign Up</Heading>
 
         <FormControl isRequired isInvalid={!!errors.email}>
-          <FormLabel requiredIndicator={null}>Email</FormLabel>
+          <FormLabel>Email</FormLabel>
           <InputGroup>
             <InputLeftElement boxSize={12} pointerEvents='none'>
               <EnvelopeFill size={20} />
@@ -56,8 +56,25 @@ const SignIn: React.FC = () => {
           <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
         </FormControl>
 
+        <FormControl isInvalid={!!errors.name}>
+          <FormLabel>Name</FormLabel>
+          <InputGroup>
+            <InputLeftElement boxSize={12} pointerEvents='none'>
+              <PersonFill size={20} />
+            </InputLeftElement>
+            <Input
+              variant='filled'
+              size='lg'
+              type='text'
+              placeholder='Alex'
+              {...register('name')}
+            />
+          </InputGroup>
+          <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+        </FormControl>
+
         <FormControl isRequired isInvalid={!!errors.password}>
-          <FormLabel requiredIndicator={null}>Password</FormLabel>
+          <FormLabel>Password</FormLabel>
           <InputGroup>
             <InputLeftElement boxSize={12} pointerEvents='none'>
               <LockFill size={20} />
@@ -72,9 +89,25 @@ const SignIn: React.FC = () => {
           <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
         </FormControl>
 
+        <FormControl isRequired isInvalid={!!errors.passwordConfirm}>
+          <FormLabel>Confirm password</FormLabel>
+          <InputGroup>
+            <InputLeftElement boxSize={12} pointerEvents='none'>
+              <LockFill size={20} />
+            </InputLeftElement>
+            <Input
+              variant='filled'
+              size='lg'
+              type='password'
+              {...register('passwordConfirm')}
+            />
+          </InputGroup>
+          <FormErrorMessage>{errors.passwordConfirm?.message}</FormErrorMessage>
+        </FormControl>
+
         <Button
           isLoading={isSubmitting}
-          loadingText='Signing in ...'
+          loadingText='Signing up ...'
           colorScheme='teal'
           type='submit'
         >
@@ -85,4 +118,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
