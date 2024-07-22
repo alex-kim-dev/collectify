@@ -1,3 +1,4 @@
+import { Link } from '@chakra-ui/next-js';
 import { Box, Button, Container, Flex, Text } from '@chakra-ui/react';
 import { type ReactElement } from 'react';
 import { Collection } from 'react-bootstrap-icons';
@@ -23,11 +24,15 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               Collectify
             </Text>
           </Flex>
-          <Button variant='outline'>Sign In</Button>
-          <Button>Sign Up</Button>
+          <Button as={Link} href='/signin' variant='outline'>
+            Sign In
+          </Button>
+          <Button as={Link} href='/signup'>
+            Sign Up
+          </Button>
         </Container>
       </Box>
-      <Box as='main' p={6}>
+      <Box as='main' py={6}>
         {children}
       </Box>
     </>
