@@ -32,7 +32,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </Button>
         </Container>
       </Box>
-      <Box as='main' py={6}>
+      <Box as='main' py={{ base: 6, md: 10 }}>
         {children}
       </Box>
     </>
