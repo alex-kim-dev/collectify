@@ -25,6 +25,9 @@ importers:
       '@t3-oss/env-nextjs':
         specifier: ^0.10.1
         version: 0.10.1(typescript@5.5.3)(zod@3.23.8)
+      boring-avatars:
+        specifier: ^1.10.2
+        version: 1.10.2
       framer-motion:
         specifier: ^11.3.6
         version: 11.3.6(@emotion/is-prop-valid@1.2.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1896,6 +1899,12 @@ packages:
     resolution:
       {
         integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==,
+      }
+
+  boring-avatars@1.10.2:
+    resolution:
+      {
+        integrity: sha512-uQyvmNeW6loz4Yytj7aDo0IhhuByW/YyOHtqwb3kQ/x48hum22hROA2Wn3qzrLR5JsoZ+FHjPO6z6LrXrWjegg==,
       }
 
   brace-expansion@1.1.11:
@@ -6113,6 +6122,8 @@ snapshots:
       resolve: 1.22.8
 
   balanced-match@1.0.2: {}
+
+  boring-avatars@1.10.2: {}
 
   brace-expansion@1.1.11:
     dependencies:

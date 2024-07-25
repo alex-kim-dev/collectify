@@ -1,13 +1,17 @@
 import { Link } from '@chakra-ui/next-js';
 import { Box, Button, chakra, Container, Flex, Text } from '@chakra-ui/react';
 import { type ReactElement } from 'react';
-import { Collection } from 'react-bootstrap-icons';
+import { Collection, Github } from 'react-bootstrap-icons';
+
+import { AccountMenu } from '~/components/AccountMenu';
 
 interface LayoutProps {
   children: ReactElement;
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const signedIn = true;
+
   return (
     <>
       <Box as='header' bg='teal.800'>
@@ -27,7 +31,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
           <chakra.div flexGrow={1} />
 
-          <Button>Sign Up</Button>
+          {signedIn ? (
+            <AccountMenu />
+          ) : (
+            <Button leftIcon={<Github size={20} />}>Sign in</Button>
+          )}
         </Container>
       </Box>
       <Box as='main' py={{ base: 6, md: 10 }}>
