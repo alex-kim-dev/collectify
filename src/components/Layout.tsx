@@ -1,6 +1,5 @@
 import { Link } from '@chakra-ui/next-js';
 import { Box, Button, chakra, Container, Flex, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import { type ReactElement } from 'react';
 import { Collection } from 'react-bootstrap-icons';
 
@@ -9,8 +8,6 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { pathname } = useRouter();
-
   return (
     <>
       <Box as='header' bg='teal.800'>
@@ -27,17 +24,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               Collectify
             </Text>
           </Flex>
+
           <chakra.div flexGrow={1} />
-          {pathname !== '/signin' && (
-            <Button as={Link} href='/signin' variant='outline'>
-              Sign In
-            </Button>
-          )}
-          {pathname !== '/signup' && (
-            <Button as={Link} href='/signup'>
-              Sign Up
-            </Button>
-          )}
+
+          <Button>Sign Up</Button>
         </Container>
       </Box>
       <Box as='main' py={{ base: 6, md: 10 }}>
