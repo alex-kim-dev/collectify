@@ -9,13 +9,21 @@ import {
   MenuList,
 } from '@chakra-ui/react';
 import Avatar from 'boring-avatars';
+import { type Session } from 'next-auth';
+import { signOut } from 'next-auth/react';
+import type { MouseEventHandler } from 'react';
 import { BoxArrowRight, ChevronDown } from 'react-bootstrap-icons';
 
-const avatar = 'https://i.pravatar.cc/150?img=68';
+interface AccountMenuProps {
+  user: Session['user'];
+  onSignOut: MouseEventHandler<HTMLButtonElement>;
+}
+
 const fallbackColors = ['#234d20', '#36802d', '#77ab59', '#c9df8a', '#f0f7da'];
 
-export const AccountMenu: React.FC = () => {
-  const name = 'User name';
+export const AccountMenu: React.FC<AccountMenuProps> = ({ user }) => {
+  const name = user?.name ?? 'Anonymous';
+  const avatar = user?.image ?? '';
 
   return (
     <Menu>
@@ -44,7 +52,7 @@ export const AccountMenu: React.FC = () => {
       </MenuButton>
       <MenuList minW='10rem' maxW='16rem'>
         <MenuGroup title={name}>
-          <MenuItem>
+          <MenuItem onClick={() => signOut()}>
             <HStack gap={2}>
               <BoxArrowRight size={20} />
               <span>Sign out</span>

@@ -1,10 +1,15 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import type { AppType } from 'next/dist/shared/lib/utils';
+import type { AppProps } from 'next/app';
+import { type Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 
 import { Layout } from '~/components/Layout';
 import { rubik, theme } from '~/theme';
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+const MyApp = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) => {
   return (
     <>
       <style jsx global>
@@ -15,9 +20,11 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         `}
       </style>
       <ChakraProvider theme={theme}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <SessionProvider session={session as Session}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </SessionProvider>
       </ChakraProvider>
     </>
   );

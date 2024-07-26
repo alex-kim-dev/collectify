@@ -1,6 +1,7 @@
 import { Link } from '@chakra-ui/next-js';
 import { Box, Button, chakra, Container, Flex, Text } from '@chakra-ui/react';
-import { type ReactElement } from 'react';
+import { signIn, signOut, useSession } from 'next-auth/react';
+import type { ReactElement } from 'react';
 import { Collection, Github } from 'react-bootstrap-icons';
 
 import { AccountMenu } from '~/components/AccountMenu';
@@ -10,7 +11,26 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const signedIn = true;
+  const session = useSession();
+  const isAuthenticated = session.status === 'authenticated';
+  const user = session.data?.user;
+
+  const handleSignIn = async () => {
+    try {
+      const res = await signIn('github', { redirect: false });
+      if (res?.error) console.log('SignInRes.error:', res.error);
+    } catch (error) {
+      console.log('sing in catch:', error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut({ redirect: false });
+    } catch (error) {
+      console.log('sign out catch', error);
+    }
+  };
 
   return (
     <>
@@ -31,10 +51,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
           <chakra.div flexGrow={1} />
 
-          {signedIn ? (
-            <AccountMenu />
+          {isAuthenticated ? (
+            <AccountMenu user={user} onSignOut={handleSignOut} />
           ) : (
-            <Button leftIcon={<Github size={20} />}>Sign in</Button>
+            <Button leftIcon={<Github size={20} />} onClick={handleSignIn}>
+              Sign in
+            </Button>
           )}
         </Container>
       </Box>
