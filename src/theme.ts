@@ -2,7 +2,7 @@ import { extendTheme, type Theme, type ThemeConfig } from '@chakra-ui/react';
 import { Rubik } from 'next/font/google';
 
 export const rubik = Rubik({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   variable: '--font-rubik',
 });
 

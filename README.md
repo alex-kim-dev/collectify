@@ -12,3 +12,4 @@ _WIP_
 - PostgreSQL, Prisma
 - Zod
 - Next-auth with OAuth provider
+- i18next

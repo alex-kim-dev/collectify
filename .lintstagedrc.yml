@@ -1,5 +1,5 @@
 '*.{j,t}s{,x}':
   - eslint --fix
 
-'*.{js,ts,jsx,tsx,css,html,json,yml,yaml,md}':
+'*.{js,cjs,ts,jsx,tsx,css,html,json,yml,yaml,md}':
   - prettier --write

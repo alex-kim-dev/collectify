@@ -1,6 +1,7 @@
-import { Link } from '@chakra-ui/next-js';
 import { Box, Button, chakra, Container, Flex, Text } from '@chakra-ui/react';
+import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import { useTranslation } from 'next-i18next';
 import type { ReactElement } from 'react';
 import { Collection, Github } from 'react-bootstrap-icons';
 
@@ -11,6 +12,7 @@ interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { t } = useTranslation();
   const session = useSession();
   const isAuthenticated = session.status === 'authenticated';
   const user = session.data?.user;
@@ -55,7 +57,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <AccountMenu user={user} onSignOut={handleSignOut} />
           ) : (
             <Button leftIcon={<Github size={20} />} onClick={handleSignIn}>
-              Sign in
+              {t('appbar.signin')}
             </Button>
           )}
         </Container>

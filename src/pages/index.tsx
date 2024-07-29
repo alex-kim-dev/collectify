@@ -1,5 +1,15 @@
 import { Heading } from '@chakra-ui/react';
+import type { GetStaticProps } from 'next';
 import Head from 'next/head';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+export const getStaticProps = (async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+}) satisfies GetStaticProps;
 
 export default function Home() {
   return (

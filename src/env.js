@@ -14,6 +14,7 @@ export const env = createEnv({
     NEXTAUTH_SECRET: z.string(),
     AUTH_GITHUB_ID: z.string(),
     AUTH_GITHUB_SECRET: z.string(),
+    I18NEXT_DEFAULT_CONFIG_PATH: z.literal('./next-i18next.config.cjs'),
   },
 
   /**
@@ -35,6 +36,7 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
     AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
+    I18NEXT_DEFAULT_CONFIG_PATH: process.env.I18NEXT_DEFAULT_CONFIG_PATH,
   },
 
   /**
